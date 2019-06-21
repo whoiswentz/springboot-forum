@@ -1,10 +1,9 @@
 package com.vinicios.forum.controller.dto;
 
 import com.vinicios.forum.model.Topic;
+import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class TopicDto {
 
@@ -20,8 +19,8 @@ public class TopicDto {
         this.createdAt = topic.getCreatedAt();
     }
 
-    public static List<TopicDto> convert(List<Topic> topics) {
-        return topics.stream().map(TopicDto::new).collect(Collectors.toList());
+    public static Page<TopicDto> convert(Page<Topic> topics) {
+        return topics.map(TopicDto::new);
     }
 
     public Long getId() {

@@ -8,6 +8,11 @@ import com.vinicios.forum.model.Topic;
 import com.vinicios.forum.repository.CourseRepository;
 import com.vinicios.forum.repository.TopicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -15,7 +20,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -46,16 +50,28 @@ public class TopicsController {
      * @return List
      */
     @GetMapping
-    public List<TopicDto> list(String courseName) {
+    @Cacheable(value = "topicsList")
+    public Page<TopicDto> list(@RequestParam(required = false) String courseName, @PageableDefault(sort = "id") Pageable pagination) {
+
         if (courseName == null) {
-            List<Topic> topics = topicRepository.findAll();
+            Page<Topic> topics = topicRepository.findAll(pagination);
             return TopicDto.convert(topics);
         }
-        List<Topic> topics = topicRepository.findByCourseName(courseName);
+        Page<Topic> topics = topicRepository.findByCourseName(courseName, pagination);
         return TopicDto.convert(topics);
     }
 
+    /**
+     * We used cache here for study purpose, the cache must be only
+     * used on tables that rarely or never changes, using cache outside
+     * this scenario can drop the performance of your application
+     *
+     * @param form
+     * @param uriComponentsBuilder
+     * @return
+     */
     @PostMapping
+    @CacheEvict(value = "topicsList", allEntries = true)
     @Transactional
     public ResponseEntity<TopicDto> register(@RequestBody @Valid TopicForm form, UriComponentsBuilder uriComponentsBuilder) {
         final Topic topic = form.convert(courseRepository);

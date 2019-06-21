@@ -1,15 +1,26 @@
 package com.vinicios.forum.model;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+@Entity
 public class Answer {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String message;
+
+    @ManyToOne
     private Topic topic;
+
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    @ManyToOne
     private User author;
+
     private Boolean solution = false;
 
     public Answer(Long id, String message, Topic topic, User author) {

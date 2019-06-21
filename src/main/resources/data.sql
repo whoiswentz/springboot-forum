@@ -1,4 +1,5 @@
-insert into USER (name, email, password) values ('Student', 'student@student.com', '123456');
+insert into USER (name, email, password)
+values ('Student', 'student@student.com', '$2a$10$A5opIpSGfPVBrvNHo0LsC.1Cd3HinSV.gXEU0Io06WLNP.L25Z1FK');
 
 insert into course (name, category) values ( 'Spring boot', 'Programming' );
 insert into course (name, category) values ( 'Clojure', 'Programming' );

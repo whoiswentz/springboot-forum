@@ -52,44 +52,44 @@ public class Answer {
         return id;
     }
 
-    public String getMessage() {
-        return message;
-    }
-
-    public Topic getTopic() {
-        return topic;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public User getAuthor() {
-        return author;
-    }
-
-    public Boolean getSolution() {
-        return solution;
-    }
-
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getMessage() {
+        return message;
     }
 
     public void setMessage(String message) {
         this.message = message;
     }
 
+    public Topic getTopic() {
+        return topic;
+    }
+
     public void setTopic(Topic topic) {
         this.topic = topic;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
+    public User getAuthor() {
+        return author;
+    }
+
     public void setAuthor(User author) {
         this.author = author;
+    }
+
+    public Boolean getSolution() {
+        return solution;
     }
 
     public void setSolution(Boolean solution) {

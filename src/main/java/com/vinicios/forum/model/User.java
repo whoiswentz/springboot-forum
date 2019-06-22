@@ -12,18 +12,14 @@ import java.util.Objects;
 @Entity
 public class User implements UserDetails {
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    private final List<Profile> profiles = new ArrayList<>();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
-
     private String email;
-
     private String password;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    private final List<Profile> profiles = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

@@ -1,5 +1,7 @@
 package com.vinicios.forum.controller.form;
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+
 public class LoginForm {
 
     private final String email;
@@ -18,11 +20,7 @@ public class LoginForm {
         return password;
     }
 
-    @Override
-    public String toString() {
-        return "LoginForm{" +
-                "email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+    public UsernamePasswordAuthenticationToken convert() {
+        return new UsernamePasswordAuthenticationToken(email, password);
     }
 }

@@ -2,8 +2,10 @@ package com.vinicios.forum.configuration.security;
 
 import com.vinicios.forum.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -21,6 +23,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     SecurityConfiguration(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
+    }
+
+    @Bean
+    @Override
+    protected AuthenticationManager authenticationManager() throws Exception {
+        return super.authenticationManager();
     }
 
     /**

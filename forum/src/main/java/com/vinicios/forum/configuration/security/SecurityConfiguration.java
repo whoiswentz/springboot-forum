@@ -56,6 +56,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/topics").permitAll()
                 .antMatchers(HttpMethod.GET, "/topic").permitAll()
                 .antMatchers(HttpMethod.POST, "/auth").permitAll()
+                .antMatchers(HttpMethod.POST, "/actuator/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .csrf()

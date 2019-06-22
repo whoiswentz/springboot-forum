@@ -1,6 +1,7 @@
 package com.vinicios.forum.service;
 
 import com.vinicios.forum.model.User;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,4 +33,17 @@ public class TokenService {
                 .compact();
     }
 
+    public Boolean isValidToken(String token) {
+        try {
+            Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public Long getUserToken(String token) {
+        Claims body = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+        return Long.parseLong(body.getSubject());
+    }
 }

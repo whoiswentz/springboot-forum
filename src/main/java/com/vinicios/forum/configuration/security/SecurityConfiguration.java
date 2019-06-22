@@ -1,6 +1,9 @@
 package com.vinicios.forum.configuration.security;
 
+import com.vinicios.forum.filter.AuthenticationFilter;
+import com.vinicios.forum.repository.UserRepository;
 import com.vinicios.forum.service.AuthenticationService;
+import com.vinicios.forum.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,16 +16,21 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final AuthenticationService authenticationService;
+    private final TokenService tokenService;
+    private final UserRepository userRepository;
 
     @Autowired
-    SecurityConfiguration(AuthenticationService authenticationService) {
+    SecurityConfiguration(AuthenticationService authenticationService, TokenService tokenService, UserRepository userRepository) {
         this.authenticationService = authenticationService;
+        this.tokenService = tokenService;
+        this.userRepository = userRepository;
     }
 
     @Bean
@@ -53,7 +61,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .disable()
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .addFilterBefore(new AuthenticationFilter(tokenService, userRepository), UsernamePasswordAuthenticationFilter.class);
     }
 
     /**
